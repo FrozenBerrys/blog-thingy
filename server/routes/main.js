@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post.js');
-
-
 //Routes
 //GET HOME
 router.get('', async (req,res)=>{
@@ -36,38 +34,28 @@ router.get('', async (req,res)=>{
     } catch (error) {
         console.log("Error");
     }
-    
-
-
-
-
-
-
-
 
 });
 
 router.get('/about', (req,res)=>{
-    res.render("about");
+    res.render("about", { currentRoute: '/about'});
 });
 
 router.get('/contact', (req,res)=>{
-    res.render("contact");
+    res.render("contact", { currentRoute: '/contact'});
 });
 
 //GET Post :id
 router.get('/post/:id', async (req,res)=>{
     try {
         let slug = req.params.id;
-
-
-
         const data = await Post.findById({ _id: slug})
         // sending locals. as data to dynamically load into the layout 
 
         const locals = {
             title: data.title ,
             //description: "Simple blog created with NodeJS, MongoDB and Express" MAYBE INCORPORATE INTO DATABASE
+            currentRoute: `/post/${slug}`
         }
 
         res.render("post", { locals, data });
@@ -103,15 +91,6 @@ router.post('/search', async (req,res)=>{
         console.log("Error");
     }
 });
-
-
-
-
-
-
-
-
-
 
 module.exports = router;
 
